@@ -247,8 +247,9 @@ def average_rebounds_by_shoe_brand():
         else:
             shoe_brands_dict[brand] = [rebounds]
     for brand in shoe_brands_dict:
-        average = round(sum(shoe_brands_dict[brand])/len(shoe_brands_dict[brand]), 2)
-        print(f"{brand}:  {average:.2f}")
+        average = sum(shoe_brands_dict[brand])/len(shoe_brands_dict[brand])
+        # print(f"{brand}:  {average:.2f}")
+        print(f"{brand}: ", "{0:.2f}".format(average))
 
 # print(num_points_per_game("Darius Garland"))
 # print(player_age("Darius Garland"))
