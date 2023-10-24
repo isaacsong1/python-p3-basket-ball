@@ -183,46 +183,77 @@ def game_dict():
         }
     }
 
-def get_all_players():
+def all_players():
     all_players = {}
     for team in game_dict():
         for player in game_dict()[team]['players']:
-            all_players.update(
-                {player['name']: {
-                    "name": player["name"],
-                    "number": player["number"],
-                    "position": player["position"],
-                    "points_per_game": player["points_per_game"],
-                    "rebounds_per_game": player["rebounds_per_game"],
-                    "assists_per_game": player["assists_per_game"],
-                    "steals_per_game": player["steals_per_game"],
-                    "blocks_per_game": player["blocks_per_game"],
-                    "career_points": player["career_points"],
-                    "age": player["age"],
-                    "height_inches": player["height_inches"],
-                    "shoe_brand": player["shoe_brand"],
-                    }
-                }
-            )
+            # player_copy.pop('name', None)
+            all_players[player["name"]] = player.copy()
+            # all_players.update({player['name']: player_copy})
     return all_players
 
 def num_points_per_game(player_name):
-    return get_all_players()[player_name]['points_per_game']
+    try:
+        return all_players().get(player_name)['points_per_game']
+    except Exception as e:
+        return "The player is not in roster"
     
 def player_age(player_name):
-    pass
+    try:
+        return all_players().get(player_name)['age']
+    except Exception as e:
+        return "The player's age is undisclosed or player not in roster"
 
 def team_colors(team_name):
-    pass
+    # for team in game_dict():
+    #     if game_dict()[team]["team_name"] == team_name:
+    #         return game_dict()[team]["colors"]
+    # Using generator expression
+    obj = game_dict()
+    return next(
+        (
+            obj[team]["colors"]
+            for team in obj
+            if obj[team]["team_name"] == team_name
+        ),
+        "No team with that name",
+    )
 
 def team_names():
-    pass
+    return [team.get("team_name") for team in game_dict().values()]
 
 def player_numbers(team_name):
-    pass
+    obj = game_dict()
+    player_numbers = list()
+    for team in obj:
+        if obj[team]["team_name"] == team_name:
+            # for player in obj[team]["players"]:
+            #     player_numbers.append(obj[team]["players"][i]["number"])
+            return [player["number"] for player in obj[team]["players"]]
+    return "The team does not exist"
+
 
 def player_stats(player_name):
-    pass
-
+    return all_players().get(player_name, "The player is not on the roster")
+    
 def average_rebounds_by_shoe_brand():
-    pass
+    shoe_brands_dict = dict()
+    players = all_players()
+    for player in players:
+        brand = players.get(player, "That player does not exist")["shoe_brand"]
+        rebounds = players.get(player, "That player does not exist")["rebounds_per_game"]
+        if brand in shoe_brands_dict.keys():
+            shoe_brands_dict[brand].append(rebounds)
+        else:
+            shoe_brands_dict[brand] = [rebounds]
+    for brand in shoe_brands_dict:
+        average = round(sum(shoe_brands_dict[brand])/len(shoe_brands_dict[brand]), 2)
+        print(f"{brand}:  {average:.2f}")
+
+# print(num_points_per_game("Darius Garland"))
+# print(player_age("Darius Garland"))
+# print(team_colors("Cleveland Cavaliers"))
+# print(team_names())
+# print(player_numbers("Cleveland Cavaliers"))
+# print(player_stats("Darius Garland"))
+average_rebounds_by_shoe_brand()
