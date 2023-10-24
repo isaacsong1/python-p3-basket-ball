@@ -182,3 +182,46 @@ def game_dict():
             ]
         }
     }
+
+def get_all_players():
+    all_players = {}
+    for team in game_dict():
+        for player in game_dict()[team]['players']:
+            all_players.update(
+                {player['name']: {
+                    "name": player["name"],
+                    "number": player["number"],
+                    "position": player["position"],
+                    "points_per_game": player["points_per_game"],
+                    "rebounds_per_game": player["rebounds_per_game"],
+                    "assists_per_game": player["assists_per_game"],
+                    "steals_per_game": player["steals_per_game"],
+                    "blocks_per_game": player["blocks_per_game"],
+                    "career_points": player["career_points"],
+                    "age": player["age"],
+                    "height_inches": player["height_inches"],
+                    "shoe_brand": player["shoe_brand"],
+                    }
+                }
+            )
+
+def num_points_per_game(player_name):
+    pass
+    
+def player_age(palyer_name):
+    pass
+
+def team_colors(team_name):
+    pass
+
+def team_names():
+    pass
+
+def player_numbers(team_name):
+    pass
+
+def player_stats(player_name):
+    pass
+
+def average_rebounds_by_shoe_brand():
+    pass
